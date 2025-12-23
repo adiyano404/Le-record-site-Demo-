@@ -1,5 +1,3 @@
-# Le-record-site-Demo-
-Le record - Guinee land registry/ cadastre foncier demo
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +33,6 @@ Le record - Guinee land registry/ cadastre foncier demo
           <a href="#accounts" class="hover:text-emerald-400" data-i18n="nav.accounts">Account &amp; Access</a>
           <a href="#search-section" class="hover:text-emerald-400" data-i18n="nav.search">Search &amp; Verify</a>
           <a href="#reports" class="hover:text-emerald-400" data-i18n="nav.reports">Reports &amp; Pricing</a>
-          <a href="#developers" id="navDevelopersLink" class="hover:text-emerald-400 hidden" data-i18n="nav.developers">Technical Design</a>
           <a href="#divisions" class="hover:text-emerald-400" data-i18n="nav.divisions">Regions &amp; Prefectures</a>
           <a href="#about" class="hover:text-emerald-400" data-i18n="nav.about">About</a>
         </nav>
@@ -73,9 +70,6 @@ Le record - Guinee land registry/ cadastre foncier demo
             <div class="flex flex-wrap gap-3 pt-2">
               <a href="#search-section" class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 transition" data-i18n="hero.primaryCta">
                 Search the registry
-              </a>
-              <a href="#developers" id="heroTechCta" class="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-slate-700 text-sm font-semibold text-slate-100 hover:border-emerald-400 hover:text-emerald-300 transition hidden" data-i18n="hero.secondaryCta">
-                See technical design
               </a>
             </div>
             <div class="flex flex-wrap items-center gap-3 pt-3 text-[11px] text-slate-400">
@@ -427,95 +421,7 @@ Le record - Guinee land registry/ cadastre foncier demo
         </div>
       </section>
 
-      <!-- Technical Architecture (admin-only, hidden by default) -->
-      <section id="developers" class="border-b border-slate-900 bg-slate-950 hidden">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 lg:py-16">
-          <div class="max-w-3xl mb-6 sm:mb-10">
-            <h2 class="text-xl sm:text-2xl font-semibold tracking-tight mb-2" data-i18n="dev.sectionTitle">Technical architecture</h2>
-            <p class="text-sm text-slate-300" data-i18n="dev.stackBody">
-              Le Record is designed around a robust Django + PostgreSQL backend with a modern API layer, custom accounts, Orange Money integration and data-driven regions and prefectures.
-            </p>
-          </div>
-
-          <div class="grid lg:grid-cols-3 gap-5">
-            <article class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-emerald-300" data-i18n="dev.stackTitle">Core stack</h3>
-              <ul class="text-xs text-slate-300 space-y-1.5">
-                <li data-i18n="dev.stackPoint1">• Django + Django REST Framework with a custom <code class="bg-slate-900 px-1 rounded border border-slate-700">Account</code> user model (users, professionals, institutions, staff).</li>
-                <li data-i18n="dev.stackPoint2">• PostgreSQL schema for regions, prefectures, communes, parcels, owners, ownerships, transactions, disputes and documents.</li>
-                <li data-i18n="dev.stackPoint3">• Separate <code class="bg-slate-900 px-1 rounded border border-slate-700">billing</code> app for products, orders, payments and generated reports.</li>
-              </ul>
-            </article>
-
-            <article class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-emerald-300" data-i18n="dev.dbTitle">Registry data model (simplified)</h3>
-              <p class="text-xs text-slate-300" data-i18n="dev.dbBody">
-                Administrative tables store the four natural regions and all prefectures with GN + number codes. Core land tables store parcels, owners, ownership records, transactions, disputes and supporting documents.
-              </p>
-              <ul class="text-[11px] text-slate-400 space-y-1.5">
-                <li data-i18n="dev.dbPoint1">• <strong>ownerships</strong> table tracks current and historical rights per parcel.</li>
-                <li data-i18n="dev.dbPoint2">• <strong>transactions</strong> store prices, fees, taxes and registrar decisions.</li>
-                <li data-i18n="dev.dbPoint3">• <strong>disputes</strong> flag conflicted parcels and drive public status.</li>
-              </ul>
-            </article>
-
-            <article class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-emerald-300" data-i18n="dev.apiTitle">Public APIs</h3>
-              <p class="text-xs text-slate-300" data-i18n="dev.apiBody">
-                A Django REST Framework public app exposes read-only APIs for parcel and transaction lookup, plus authenticated endpoints for ordering reports and initiating Orange Money payments.
-              </p>
-              <dl class="text-[11px] text-slate-300 space-y-1.5 mt-1">
-                <div>
-                  <dt class="font-semibold" data-i18n="dev.endpointParcel">GET /api/public/parcels/{parcel_number}/</dt>
-                  <dd class="text-slate-400" data-i18n="dev.endpointParcelDesc">Parcel lookup + current owner, title and prefecture snapshot.</dd>
-                </div>
-                <div>
-                  <dt class="font-semibold" data-i18n="dev.endpointTransaction">GET /api/public/transactions/{transaction_number}/</dt>
-                  <dd class="text-slate-400" data-i18n="dev.endpointTransactionDesc">Transaction type, parties, status and linked parcel.</dd>
-                </div>
-                <div>
-                  <dt class="font-semibold" data-i18n="dev.endpointOrder">POST /api/billing/orders/parcel-report/</dt>
-                  <dd class="text-slate-400" data-i18n="dev.endpointOrderDesc">Authenticated creation of a paid order for a parcel or transaction.</dd>
-                </div>
-                <div>
-                  <dt class="font-semibold" data-i18n="dev.endpointPay">POST /api/billing/orders/{order_id}/pay/</dt>
-                  <dd class="text-slate-400" data-i18n="dev.endpointPayDesc">Initiate Orange Money or other payments.</dd>
-                </div>
-              </dl>
-            </article>
-          </div>
-
-          <div class="mt-5 grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-5">
-            <article class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-emerald-300" data-i18n="dev.omTitle">Orange Money integration</h3>
-              <p class="text-xs text-slate-300" data-i18n="dev.omBody">
-                A dedicated payment provider handles Orange Money flows: initiating payments, handling asynchronous webhooks and updating Order and Payment records atomically.
-              </p>
-              <ol class="text-[11px] text-slate-300 list-decimal list-inside space-y-1.5 mt-2">
-                <li data-i18n="dev.omStep1">User or institution creates an <strong>Order</strong> for a product (e.g. FULL_REPORT).</li>
-                <li data-i18n="dev.omStep2">The backend creates a <strong>Payment</strong> row and calls the Orange Money API via <code class="bg-slate-900 px-1 rounded border border-slate-700">OrangeMoneyProvider</code>.</li>
-                <li data-i18n="dev.omStep3">Orange Money redirects or pushes an STK request to the user’s wallet.</li>
-                <li data-i18n="dev.omStep4">The asynchronous webhook updates <strong>Payment.status</strong> and <strong>Order.status</strong> atomically.</li>
-                <li data-i18n="dev.omStep5">A background task generates a signed PDF <strong>Report</strong> and stores its URL.</li>
-              </ol>
-            </article>
-
-            <article class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-emerald-300" data-i18n="dev.securityTitle">Security &amp; governance</h3>
-              <p class="text-xs text-slate-300" data-i18n="dev.securityBody">
-                Role-based access, ministry-level permissions, verified staff accounts, signed reports and immutable transaction logs ensure legal-grade evidence for ownership changes.
-              </p>
-              <ul class="text-[11px] text-slate-300 space-y-1.5 mt-1">
-                <li data-i18n="dev.securityPoint1">• Staff users (registrars, surveyors) onboarded as <code class="bg-slate-900 px-1 rounded border border-slate-700">Account</code> with STAFF type.</li>
-                <li data-i18n="dev.securityPoint2">• Ministries and agencies grouped with explicit “can_add_property_records” permissions.</li>
-                <li data-i18n="dev.securityPoint3">• Every change to parcels, ownerships or disputes is versioned and auditable.</li>
-                <li data-i18n="dev.securityPoint4">• Reports are signed with digital seals and verifiable QR codes.</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
+      <!-- Technical Architecture section intentionally removed from public demo. Kept only in codebase / documentation for admin & backend reference. -->
       <!-- Regions & Prefectures -->
       <section id="divisions" class="border-b border-slate-900 bg-slate-950">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 lg:py-16">
